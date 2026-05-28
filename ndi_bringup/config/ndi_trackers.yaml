@@ -1,0 +1,9 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100 # Hz
+    # here we put our list of trackers
+    trackers:
+      - name: "tracker_1"
+        srom: "$(find ndi_description)/sroms/8700339.rom"
+      - name: "tracker_2"
+        srom: "$(find ndi_description)/sroms/8700340.rom"

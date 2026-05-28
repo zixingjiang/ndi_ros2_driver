@@ -21,7 +21,7 @@ This repository offers a `ros2_control` driver for [Northern Digital Inc. (NDI)]
 ROS2 Jazzy on Linux (this driver is developed and tested on Ubuntu 24.04 LTS).
 
 ## Packages in this repository
-- `ndi_bringup`: This package provides an example to bring up the driver for a NDI polaris vega system. Users may use this package as an reference to write their own bringup package for their application.
+- `ndi_bringup`: This package provides an example to bring up the driver for a NDI Polaris system. Users may use this package as an reference to write their own bringup package for their application.
 - `ndi_description`: This package contains the .rom file and `ros2_control` macros for describing the NDI optical tracking systems.
 - `ndi_hardware`: This package contains the `ros2_control` hardware interface for NDI optical tracking systems. This package is built upon NDI's Combined API (C++) v1.9.7, which is shipped with this package at [ndi_hardware/external](https://github.com/zixingjiang/ndi_ros2_driver/tree/jazzy/ndi_hardware/external).
 
@@ -44,10 +44,10 @@ ROS2 Jazzy on Linux (this driver is developed and tested on Ubuntu 24.04 LTS).
     colcon build 
     source install/setup.bash
     ```
-4. **Connect to NDI optical tracking system and bringup the driver**. Connect the NDI system with your PC through Ethernet. The `ndi_bringup` package provides an example launch file to start a NDI polaris vega system with two trackers loaded (tracker_1: 8700339.rom; tracker_2: 8700340.rom):
+4. **Connect to NDI optical tracking system and bringup the driver**. Connect the NDI system with your PC through Ethernet. The `ndi_bringup` package provides an example launch file to start a NDI Polaris system. Trackers are configured in one YAML file, [`ndi_bringup/config/ndi_trackers.yaml`](ndi_bringup/config/ndi_trackers.yaml); edit that file to add, remove, or rename trackers and to select their SROM files.
    ```bash
    # Fill in your NDI system IP address in the following command
-   ros2 launch ndi_bringup polaris_vega.launch.py \ 
+   ros2 launch ndi_bringup polaris.launch.py \
      ip:=<your_ndi_ip> \
      gui:=true
    ```
@@ -55,7 +55,7 @@ ROS2 Jazzy on Linux (this driver is developed and tested on Ubuntu 24.04 LTS).
    
    <img src="doc/rviz.gif" width="500">
 
-5. **Access the data**. After starting the driver, you can access the tracking data through any of the following means: **ros2_control state interface**, **ROS 2 topics**, or **TF**. Note that the `ndi_bringup` package runs the `ros2_control` stack under the `ndi` namespace by default.
+5. **Access the data**. After starting the driver, you can access the tracking data through any of the following means: **ros2_control state interface**, **ROS 2 topics**, or **TF**. Note that the `ndi_bringup` package runs the `ros2_control` stack under the `ndi` namespace by default. The pose broadcaster name for each tracker is generated from the tracker name in the YAML file as `<tracker_name>_pose_broadcaster`.
 
 ## Use this driver in your own project
 ### Write your own bringup package

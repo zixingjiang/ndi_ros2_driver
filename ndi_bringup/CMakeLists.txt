@@ -24,7 +24,7 @@ if(BUILD_TESTING)
 endif()
 
 # Install config, launcg, and urdf directories
-install(DIRECTORY config launch urdf rviz
+install(DIRECTORY config launch rviz
   DESTINATION share/${PROJECT_NAME}
 )
 

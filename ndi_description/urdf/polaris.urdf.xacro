@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="polaris">
+
+    <!-- import marco -->
+    <xacro:include filename="$(find ndi_description)/urdf/ndi_tracker_macro.xacro" />
+
+    <!-- parameters -->
+    <xacro:arg name="ip" default="0.0.0.0" />
+    <xacro:arg name="base_frame" default="polaris_base" />
+    <!-- comma‑strings for tracker names and srom paths -->
+    <xacro:arg name="tracker_names" default="" />
+    <xacro:arg name="tracker_sroms" default="" />
+
+    <!-- single link represents the base of the polaris optical tracking system -->
+    <!-- it cannot be negelected as robot state broadcaster requires at least one "root" link in urdf -->
+    <!-- it will be used as the reference frame in tracker pose broadcasting -->
+    <link name="$(arg base_frame)" />
+
+    <!-- ros2_control block, with auto‑generated trackers -->
+    <ros2_control name="$(arg name)" type="sensor">
+
+        <hardware>
+            <plugin>ndi_hardware/NdiTrackerHardwareInterface</plugin>
+            <param name="ip">$(arg ip)</param>
+        </hardware>
+
+        <!-- It is advised to load only the markers you are interested in broadcasting -->
+        <!-- convert comma‑strings into Python lists -->
+        <xacro:add_trackers
+            name_list="${'$(arg tracker_names)'.split(',')}"
+            srom_list="${'$(arg tracker_sroms)'.split(',')}" />
+
+    </ros2_control>
+
+</robot>

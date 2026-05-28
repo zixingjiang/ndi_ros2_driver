@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- 
+    ros2 control tag for a NDI tracker
+    name: name of the tracker
+    srom: path to the srom file defining the tracker 
+    -->
+    <xacro:macro name="ndi_tracker" params="
+        name
+        srom
+    ">
+        <sensor name="${name}">
+            <state_interface name="position.x" />
+            <state_interface name="position.y" />
+            <state_interface name="position.z" />
+            <state_interface name="orientation.x" />
+            <state_interface name="orientation.y" />
+            <state_interface name="orientation.z" />
+            <state_interface name="orientation.w" />
+            <param name="srom">${srom}</param>
+        </sensor>
+    </xacro:macro>
+
+    <!-- recursive macro: pop one off both lists and instantiate -->
+    <xacro:macro name="add_trackers" params="name_list srom_list">
+        <xacro:if value="${name_list and srom_list}">
+            <!-- pop the first name and srom -->
+            <xacro:property name="name" value="${name_list.pop(0)}" />
+            <xacro:property name="srom" value="${srom_list.pop(0)}" />
+
+            <!-- instantiate the tracker -->
+            <xacro:ndi_tracker
+                name="${name}"
+                srom="${srom}" />
+
+            <!-- recurse on the remainder -->
+            <xacro:add_trackers name_list="${name_list}" srom_list="${srom_list}" />
+        </xacro:if>
+    </xacro:macro>
+
+
+</robot>
